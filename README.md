@@ -1,19 +1,9 @@
+Python version of https://github.com/dronemapper-io/dji-dewarp
 
-# drnmppr-dewarp: Quick Tool to Apply EXIF Dewarp Distortion Correction to Images from DJI Drones. Uses exiftool to Preserve EXIF Metadata.
 
-https://dronemapper.com
 
-#### Build w/ Windows
+``` python dewarp.py JPG input_dir output_dir```
 
-cd build
-
-cmake -g "Visual Studio 2017 Win64" -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_SYSTEM_VERSION=10.0 ..
-
-#### Run
-
-c:\my-images> MKDIR dewarped
-
-c:\my-images> drnmppr-dewarp.exe "*.JPG" dewarped\
 
 ```
 Example from Phantom 4 RTK
@@ -35,3 +25,4 @@ The lens distortion parameters were all pre-measured.
 These parameters would all be saved in “DewarpData” under the XMP field for every image taken.
 You can also input these parameters manually to calibrate the image distortion with the third-party software.
 ```
+
