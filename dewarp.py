@@ -53,15 +53,12 @@ def main():
                 for tag, value in d.items():
                     if 'XMP:DewarpData' in tag:
                         fx, fy, cx, cy, k1, k2, p1, p2, k3=[float(x) for x in value.split(';')[1].split(',')]
-                        ic(fx, fy, cx, cy, k1, k2, p1, p2, k3)
+                        #ic(fx, fy, cx, cy, k1, k2, p1, p2, k3)
                     if 'XMP:DewarpFlag' in tag and value !=0:
                         print(f"\t[*] {input_file} is already dewarped")
                         exit
 
-                        
-        dist_coeff = np.zeros((5, 1), np.float64)
-
-        
+                     
         # Example from Phantom 4 RTK
         # Dewarp Data                     : 2018-09-04; 3678.870000000000, 3671.840000000000, 10.100000000000, 27.290000000000, -0.268652000000,0.114663000000,0.000015268800,-0.000046070700,-0.035026100000
         # Dewarp Flag                     : 0
@@ -77,18 +74,23 @@ def main():
         # cam1[1, 2] = 1824 + 27.290000000000   // cY (5472x3648 Height / 2)
         # cam1[0, 0] = 3678.870000000000        // fx
         # cam1[1, 1] = 3671.840000000000        // fy
-        
+
+        dist_coeff = np.zeros((5, 1), np.float64)
         dist_coeff[0, 0] = k1
         dist_coeff[1, 0] = k2
         dist_coeff[2, 0] = p1
         dist_coeff[3, 0] = p2
         dist_coeff[4, 0] = k3
         cam1 = np.zeros((3, 3), np.float32)
-        cam1[0, 2] = input_image.shape[1]/2 - cx 
+
+        cam1[0, 2] = input_image.shape[1]/2 + cx 
         cam1[1, 2] = input_image.shape[0]/2 + cy
         cam1[0, 0] = fx
         cam1[1, 1] = fy
         cam1[2, 2] = 1
+
+
+
         map1, map2 = cv2.initUndistortRectifyMap(cam1, dist_coeff, None, cam1, input_image.shape[1::-1], cv2.CV_32FC1)
         dewarped_image = cv2.remap(input_image, map1, map2, cv2.INTER_LINEAR)
         
