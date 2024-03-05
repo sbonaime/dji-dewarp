@@ -2,7 +2,7 @@
 import os
 import sys
 import argparse
-from cv2 import cv2
+import cv2
 import numpy as np
 from exiftool import ExifToolHelper, ExifTool
 
